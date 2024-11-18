@@ -1,49 +1,46 @@
-[![CI](https://github.com/nogibjj/Wenye_Li_Mini_Project_10/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Wenye_Li_Mini_Project_10/actions/workflows/cicd.yml)
-# Wenye Li Mini Project 10
+[![CI](https://github.com/nogibjj/Wenye_Li_Mini_Project_11/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Wenye_Li_Mini_Project_11/actions/workflows/cicd.yml)
+# Wenye Li Mini Project 11
 
-## Project Description
-This project utilizes PySpark to process and analyze drug use data. The focus is on extracting insights from age-specific drug usage patterns, performing data transformations, and leveraging Spark SQL for complex queries.
+## Overview
+This project implements a **Databricks-based data pipeline** for analyzing substance use patterns across different age groups. Using PySpark for data processing, the pipeline follows a structured ETL (Extract, Transform, Load) approach to process and analyze drug use survey data from FiveThirtyEight.
 
-## File Structure
-- `main.py`: Entry point for running the analysis.
-- `mylib/lib.py`: Contains reusable functions for data processing.
-- `test.py`: Unit tests for the functions in `lib.py`.
+## Key Components
+The pipeline consists of three main stages:
+1. **Data Extraction**: Fetches drug use survey data from FiveThirtyEight's public repository
+2. **Data Transformation**: Standardizes data types and cleans missing values
+3. **Analysis**: Performs targeted queries focusing on substance use patterns among young adults
 
-## Key Features
+## Pipeline Architecture
 
-- Data extraction and preprocessing
-- Basic descriptive statistical analysis
-- Grouping and aggregation using Spark SQL
-- Categorization and transformation of data to highlight alcohol risk levels
-- Automated CI/CD pipeline for testing and formatting
+### Data Flow
+1. **Source**: FiveThirtyEight's drug use dataset 
+2. **Processing**: PySpark-based data cleaning and transformation
+3. **Storage**: Delta Lake format for efficient data management
+4. **Analysis**: SQL queries for demographic analysis
 
-## How to Run
-1. Clone the repository:
-   ```bash
-   git clone <repository_url>
-   cd <repository_name>
-   ```
-2. Install dependencies:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-3. Run the main script:
-   ```bash
-   python main.py
-   ```
-4. Run tests:
-   ```bash
-   pytest
-   ```
+### Implementation Details
+- **Extract Stage**: `extract.py`
+  - Reads CSV data from FiveThirtyEight
+  - Stores raw data in Delta format
 
-## Data Processing Flow
+- **Transform Stage**: `transform_load.py`
+  - Standardizes data types
+  - Handles missing values
+  - Saves processed data
 
-- Extract: Download the dataset using the extract() function.
-- Initialize: Start a Spark session with start_spark().
-- Load: Load the dataset into a PySpark DataFrame using load_data().
-- Analyze: Generate descriptive statistics with describe().
-- Query: Use Spark SQL in the query() function to group and aggregate data by age and substance usage.
-- Transform: Apply data transformations with example_transform() to categorize alcohol usage into risk levels.
-- Cleanup: End the Spark session with end_spark().
+- **Query Stage**: `query.py`
+  - Analyzes substance use patterns
+  - Focuses on young adult demographics
+
+## Data Architecture
+
+### Source Configuration
+- **Type**: CSV file
+- **Location**: FiveThirtyEight GitHub repository
+- **Format**: Structured data with age groups and usage statistics
+
+### Storage Configuration
+- **Format**: Delta Lake
+- **Paths**:
+  - Raw data: `/dbfs/tmp/drug_use_data`
+  - Processed data: `/dbfs/tmp/transformed_drug_data`
