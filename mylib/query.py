@@ -3,11 +3,10 @@ from pyspark.sql import SparkSession
 def create_spark(app_name):
     return SparkSession.builder.appName(app_name).getOrCreate()
 
-def query():
+def query(df):
     """Query young adult drug use patterns"""
     spark = create_spark("Drug Use Analysis")
     
-    df = spark.read.format("delta").load("/dbfs/FileStore/transformed_drug_data")
     df.createOrReplaceTempView("drug_use")
     
     result = spark.sql("""
@@ -23,4 +22,4 @@ def query():
     """)
     
     result.show()
-    print("Query completed!")
+    print("Query analysis completed!")

@@ -1,44 +1,33 @@
-"""Test Databricks functionality: Verify DBFS paths for drug use data"""
-import requests
-from dotenv import load_dotenv
-import os
+"""Test Databricks functionality: Verify data pipeline"""
+from mylib.extract import create_spark, extract
+from mylib.transform_load import transform
+from mylib.query import query
 
-# Load environment variables
-load_dotenv()
-server_h = os.getenv("SERVER_HOSTNAME")
-access_token = os.getenv("ACCESS_TOKEN")
-
-# Define paths to test
-PATHS_TO_TEST = [
-    "dbfs:/FileStore/drug_use_data",         # Raw data
-    "dbfs:/FileStore/transformed_drug_data"   # Transformed data
-]
-
-url = f"https://{server_h}/api/2.0"
-
-def check_data_path(path, headers):
-    """Check if path exists in DBFS"""
+def test_pipeline():
+    """Test the data pipeline functions"""
+    # Test extract
+    print("Testing data extraction...")
     try:
-        response = requests.get(
-            url + f"/dbfs/get-status?path={path}", 
-            headers=headers
-        )
-        response.raise_for_status()
-        return response.json()["path"] is not None
+        df = extract()
+        print("✓ Extract test passed")
     except Exception as e:
-        print(f"Error checking file path: {e}")
-        return False
-
-def test_databricks():
-    """Test if the specified paths exist in DBFS"""
-    headers = {"Authorization": f"Bearer {access_token}"}
+        print(f"✗ Extract test failed: {e}")
     
-    for path in PATHS_TO_TEST:
-        exists = check_data_path(path, headers)
-        if exists:
-            print(f"✓ Path exists: {path}")
-        else:
-            print(f"✗ Path does not exist: {path}")
+    # Test transform
+    print("\nTesting data transformation...")
+    try:
+        transformed_df = transform(df)
+        print("✓ Transform test passed")
+    except Exception as e:
+        print(f"✗ Transform test failed: {e}")
+    
+    # Test query
+    print("\nTesting data query...")
+    try:
+        query(transformed_df)
+        print("✓ Query test passed")
+    except Exception as e:
+        print(f"✗ Query test failed: {e}")
 
 if __name__ == "__main__":
-    test_databricks()
+    test_pipeline()
