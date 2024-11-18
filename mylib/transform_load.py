@@ -13,7 +13,10 @@ def transform_data(df):
     3. Standardizing column types
     """
     # Get list of columns except 'age' and 'n'
-    numeric_columns = [col_name for col_name in df.columns if col_name not in ['age', 'n']]
+    numeric_columns = [
+    col_name for col_name in df.columns 
+    if col_name not in ['age', 'n']
+    ]
     
     # Start with original dataframe
     transformed_df = df
