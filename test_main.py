@@ -1,7 +1,8 @@
 """Test Databricks functionality: Verify data pipeline"""
-from mylib.extract import create_spark, extract
+from mylib.extract import extract
 from mylib.transform_load import transform
 from mylib.query import query
+
 
 def test_pipeline():
     """Test the data pipeline functions"""
@@ -12,7 +13,7 @@ def test_pipeline():
         print("✓ Extract test passed")
     except Exception as e:
         print(f"✗ Extract test failed: {e}")
-    
+
     # Test transform
     print("\nTesting data transformation...")
     try:
@@ -20,7 +21,7 @@ def test_pipeline():
         print("✓ Transform test passed")
     except Exception as e:
         print(f"✗ Transform test failed: {e}")
-    
+
     # Test query
     print("\nTesting data query...")
     try:
@@ -28,6 +29,7 @@ def test_pipeline():
         print("✓ Query test passed")
     except Exception as e:
         print(f"✗ Query test failed: {e}")
+
 
 if __name__ == "__main__":
     test_pipeline()
