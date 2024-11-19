@@ -2,45 +2,45 @@
 # Wenye Li Mini Project 11
 
 ## Overview
-This project implements a **Databricks-based data pipeline** for analyzing substance use patterns across different age groups. Using PySpark for data processing, the pipeline follows a structured ETL (Extract, Transform, Load) approach to process and analyze drug use survey data from FiveThirtyEight.
+This project implements an ETL (Extract, Transform, Load) pipeline using Databricks to analyze drug usage patterns across different age groups.
 
-## Key Components
-The pipeline consists of three main stages:
-1. **Data Extraction**: Fetches drug use survey data from FiveThirtyEight's public repository
-2. **Data Transformation**: Standardizes data types and cleans missing values
-3. **Analysis**: Performs targeted queries focusing on substance use patterns among young adults
+## Project Features
+- Complete ETL pipeline implementation in Databricks
+- Data source: FiveThirtyEight drug usage dataset
+- Data sink: Databricks Delta Lake tables
+- Analysis of young adult drug usage patterns
 
-## Pipeline Architecture
+## Dataset
+The dataset comes from FiveThirtyEight, containing information about drug use by age. It includes usage statistics for various substances including alcohol, marijuana, cocaine, and heroin across different age groups.
+Dataset source: https://raw.githubusercontent.com/fivethirtyeight/data/refs/heads/master/drug-use-by-age/drug-use-by-age.csv
 
-### Data Flow
-1. **Source**: FiveThirtyEight's drug use dataset 
-2. **Processing**: PySpark-based data cleaning and transformation
-3. **Storage**: Delta Lake format for efficient data management
-4. **Analysis**: SQL queries for demographic analysis
+## Pipeline Components
+1. Data Extraction (extract.py)
+2. Data Transformation and Loading
+The pipeline processes the data by:
+- Handling missing values (replacing "-" with NULL)
+- Converting string values to appropriate numeric types
+- Loading processed data into Delta table
+3. Analysis Query
+The main analysis focuses on young adult drug usage patterns
 
-### Implementation Details
-- **Extract Stage**: `extract.py`
-  - Reads CSV data from FiveThirtyEight
-  - Stores raw data in Delta format
+## Setup Instructions
 
-- **Transform Stage**: `transform_load.py`
-  - Standardizes data types
-  - Handles missing values
-  - Saves processed data
+1. Create a Databricks Cluster
+   - Configure a new cluster in your Databricks workspace
 
-- **Query Stage**: `query.py`
-  - Analyzes substance use patterns
-  - Focuses on young adult demographics
+2. Upload Pipeline Scripts
+   - Upload the ETL scripts to your Databricks workspace
+   - Ensure all dependencies are installed on your cluster
 
-## Data Architecture
+3. Create Databricks Job
+   - Create a new job in Databricks Workflows
+   - Configure the job to run the ETL pipeline scripts in sequence:
+     1. Extract data
+     2. Transform and load
+     3. Run analysis query
 
-### Source Configuration
-- **Type**: CSV file
-- **Location**: FiveThirtyEight GitHub repository
-- **Format**: Structured data with age groups and usage statistics
+![Workflows](workflow.png)
 
-### Storage Configuration
-- **Format**: Delta Lake
-- **Paths**:
-  - Raw data: `/dbfs/tmp/drug_use_data`
-  - Processed data: `/dbfs/tmp/transformed_drug_data`
+## CI/CD Pipeline
+The project includes automated CI/CD pipeline
