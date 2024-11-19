@@ -1,14 +1,19 @@
 from pyspark.sql import SparkSession
 
+DATABASE_NAME = "drug_analysis_db"
+
 def create_spark(app_name):
+    """Create or get Spark session"""
     return SparkSession.builder.appName(app_name).getOrCreate()
 
-def query(df):
+def query():
     """Query young adult drug use patterns"""
     spark = create_spark("Drug Use Analysis")
     
+    df = spark.table(f"{DATABASE_NAME}.drug_use")
     df.createOrReplaceTempView("drug_use")
     
+    # Analyze young adult drug usage
     result = spark.sql("""
     SELECT 
         age,
@@ -21,5 +26,10 @@ def query(df):
     ORDER BY alcohol_use DESC
     """)
     
+    print("\nYoung Adult Drug Usage:")
     result.show()
-    print("Query analysis completed!")
+    
+    return result
+
+if __name__ == "__main__":
+    query()  # Step 3: Query the transformed data
